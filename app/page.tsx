@@ -18,11 +18,16 @@ export default function Home() {
   const handleShare = async () => {
     if (navigator.share) {
       try {
+        const response = await fetch("/assets/file_example_MP4_640_3MG.mp4");
+        const blob = await response.blob();
+
         await navigator.share({
           title: "공유하기 제목",
           text: "공유할 내용을 여기에 작성하세요.",
-          url: window.location.href, // 현재 페이지 URL을 공유
+          url: window.location.href,
+          files: [new File([blob], "sample.mp4", { type: "video/mp4" })],
         });
+
         console.log("공유 성공");
       } catch (error) {
         console.error("공유 중 오류 발생:", error);
